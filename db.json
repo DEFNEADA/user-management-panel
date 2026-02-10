@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "email": "admin2@example.com",
+      "password": "$2a$10$CyhFWktI2WnoE6aS3IbVb.fCrjYpRQQ0PIoAL8qtY7l58ghi.bxbO",
+      "username": "Defne",
+      "role": "admin",
+      "id": 4
+    },
+    {
+      "email": "defne@exampl.com",
+      "password": "$2a$10$bPSu20ymmTw5ktcUr0wrAOmpCWxIMuv6sNUnmbGAHtD1PE.Sy7Wd2",
+      "username": "defnee3",
+      "role": "user",
+      "id": 6
+    }
+  ],
+  "logs": []
+}

@@ -1,0 +1,14 @@
+body.auth-page {
+  background-color: rgb(247, 189, 144);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  background-color: rgb(246, 158, 90);
+}
