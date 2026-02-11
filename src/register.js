@@ -1,4 +1,5 @@
 import { register, CheckGuest } from "./assets/auth.js";
+import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckGuest();
@@ -16,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const password2 = document
         .getElementById("registerpassword2")
         .value.trim();
-      if (!username) {
-        alert("Lütfen bir kullanıcı adı belirleyin.");
-        return;
-      }
+
+      if (!emailRegex(email)) return;
+      if (!passwordRegex(password)) return;
+      if (!usernameRegex(username)) return;
 
       if (password !== password2) {
         alert("Şifreler eşleşmiyor!");
@@ -33,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Kayıt başarılı! Giriş yapabilirsiniz.");
           window.location.href = "login.html";
         } else {
-          console.error("Kayıt Hatası:", result.error);
           if (result.error === "Email already exists") {
             alert("Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.");
           } else {

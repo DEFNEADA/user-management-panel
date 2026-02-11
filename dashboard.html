@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Header -->
     <header
       class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
     >
@@ -30,7 +29,6 @@
 
     <div class="container-fluid">
       <div class="row">
-        <!-- Sidebar -->
         <nav
           id="sidebarMenu"
           class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
@@ -39,17 +37,21 @@
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
+                <a
+                  class="nav-link active text-dark"
+                  aria-current="page"
+                  href="#"
+                >
                   Dashboard
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">
+                <a class="nav-link text-dark" href="dashboard.html">
                   Kullanıcı Yönetimi
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="profile.html"> Profil</a>
+                <a class="nav-link text-dark" href="profile.html"> Profil</a>
               </li>
             </ul>
           </div>
@@ -66,7 +68,7 @@
                 type="button"
                 class="btn btn-sm btn-primary"
                 data-bs-toggle="modal"
-                data-bs-target="#userAddModal"
+                data-bs-target="#user-transaction-Modal"
               >
                 Yeni Kullanıcı Ekle
               </button>
@@ -91,14 +93,19 @@
       </div>
     </div>
 
-    <div class="modal fade" id="userAddModal" tabindex="-1" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="user-transaction-Modal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Yeni Kullanıcı Ekle</h5>
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title text-white">Yeni Kullanıcı Ekle</h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -167,13 +174,13 @@
       </div>
     </div>
     <div class="modal" tabindex="-1" id="userdeleteinform">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Onaylama</h5>
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title bg-dark text-white">Onaylama</h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -199,6 +206,41 @@
             >
               Onaylıyorum
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="userdetailinform"
+      tabindex="-1"
+      aria-labelledby="userdetailslabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-white">
+            <h1
+              class="modal-title fs-5 bg-dark text-white"
+              id="userdetailslabel"
+            >
+              Detaylar
+            </h1>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>ID:</strong> <span id="detail-id"></span></p>
+            <p>
+              <strong>Kullanıcı Adı:</strong> <span id="detail-username"></span>
+            </p>
+            <p><strong>E-posta:</strong> <span id="detail-email"></span></p>
+            <p><strong>Rol:</strong> <span id="detail-role"></span></p>
           </div>
         </div>
       </div>

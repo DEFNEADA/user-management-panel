@@ -12,3 +12,12 @@ body.auth-page {
   border-radius: 10px;
   background-color: rgb(246, 158, 90);
 }
+
+.form-control:focus {
+  border-color: #170827;
+  box-shadow: 0 0 0 0.25rem rgba(5, 1, 8, 0.25);
+}
+.form-select:focus {
+  border-color: #170827;
+  box-shadow: 0 0 0 0.25rem rgba(5, 1, 8, 0.25);
+}

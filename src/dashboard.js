@@ -8,17 +8,12 @@ import {
   postRequest,
   deleteRequest,
 } from "./api/api.js";
+import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
 
   let deleteUserId = null;
-
-  const user = Store.currentUser;
-  if (user) {
-    const displayName = user.username || user.fullName;
-    document.getElementById("welcome-message").textContent = ` ${displayName}`;
-  }
 
   const logoutBtn = document.getElementById("logout-button");
   if (logoutBtn) {
@@ -33,8 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     adduserbutton.addEventListener("click", () => {
       document.getElementById("user-transactions-form").reset();
       document.getElementById("user-id").value = "";
-      document.querySelector("#userAddModal .modal-title").textContent =
-        "Yeni Kullanıcı Ekle";
+      document.querySelector(
+        "#user-transaction-Modal .modal-title",
+      ).textContent = "Yeni Kullanıcı Ekle";
     });
   }
 
@@ -52,10 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("password").value = "";
           document.getElementById("password2").value = "";
           document.getElementById("user-id").value = user.id; // ID'yi kaydet
-          document.querySelector("#userAddModal .modal-title").textContent =
-            "Kullanıcı Düzenle";
+          document.querySelector(
+            "#user-transaction-Modal .modal-title",
+          ).textContent = "Kullanıcı Düzenle";
 
-          const modalEl = document.getElementById("userAddModal");
+          const modalEl = document.getElementById("user-transaction-Modal");
           const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.show();
         }
@@ -71,6 +68,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         deleteUserId = id;
+      }
+
+      const detailsbtn = e.target.closest(".details-btn");
+      if (detailsbtn) {
+        const id = detailsbtn.getAttribute("data-id");
+        try {
+          const user = await getRequest(`${Config.endpoints.users}/${id}`);
+          if (user) {
+            document.getElementById("detail-username").textContent =
+              user.username || "-";
+            document.getElementById("detail-email").textContent =
+              user.email || "-";
+            document.getElementById("detail-role").textContent =
+              user.role || "-";
+            document.getElementById("detail-id").textContent = user.id || "-";
+          } else {
+            alert("Kullanıcı bulunamadı");
+            return;
+          }
+        } catch (error) {
+          console.error("İşlem hatası:", error);
+        }
       }
     });
   }
@@ -107,12 +126,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const payload = { username, email, role };
 
+      if (!emailRegex(email)) return;
+      if (!usernameRegex(username)) return;
       if (password) {
         if (password !== password2) {
           alert("Şifreler eşleşmiyor!");
           return;
         }
         payload.password = password;
+        if (!passwordRegex(password)) return;
       }
 
       try {
@@ -126,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
           await postRequest(Config.endpoints.users, payload);
         }
 
-        const modalEl = document.getElementById("userAddModal");
+        const modalEl = document.getElementById("user-transaction-Modal");
         const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
         modal.hide();
         renderUsers();
