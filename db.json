@@ -1,18 +1,39 @@
 {
   "users": [
     {
-      "email": "admin2@example.com",
-      "password": "$2a$10$CyhFWktI2WnoE6aS3IbVb.fCrjYpRQQ0PIoAL8qtY7l58ghi.bxbO",
-      "username": "Defne",
+      "email": "admin2@mple.com",
+      "password": "$2a$10$S2TuuxoVF9ddDbXT9W0bv.LK2pBHJEK48yEfMze7H75Az7fKe980C",
+      "username": "Defne_ada52",
       "role": "admin",
       "id": 4
     },
     {
       "email": "defne@exampl.com",
-      "password": "$2a$10$bPSu20ymmTw5ktcUr0wrAOmpCWxIMuv6sNUnmbGAHtD1PE.Sy7Wd2",
+      "password": "$2a$10$kdSXWP2xEwEqy9Jr2SbVeeO9DLf0zAZw6FOKcuQaSJFExLPYpqMp.",
       "username": "defnee3",
       "role": "user",
       "id": 6
+    },
+    {
+      "email": "defneada@gmail.com",
+      "password": "$2a$10$dFUtbFKa884WLCT4u.k30OnHwUbxcmLxRe5sacdjZwtzZhzGGgM1S",
+      "username": "defneada52",
+      "role": "admin",
+      "id": 7
+    },
+    {
+      "email": "defneada10@gmail.com",
+      "password": "$2a$10$M2ROoWIv5XNLzwECMubtOOFK69LUv/xvX/9uUvvuCFVjlJcqKZ/.O",
+      "username": "Defneaada@gmail.com",
+      "role": "user",
+      "id": 8
+    },
+    {
+      "email": "defneada1@gmail.com",
+      "password": "$2a$10$j.QZ9eyx1aRqb0sDA6srVuWHgOXw78.tGMFNc7cmCrZLhIBqZ9P7W",
+      "username": "defne",
+      "role": "admin",
+      "id": 9
     }
   ],
   "logs": []
