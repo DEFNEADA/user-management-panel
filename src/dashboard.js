@@ -13,6 +13,11 @@ import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
 
+  const user = Store.currentUser;
+  if (user) {
+    document.getElementById("welcome-message").textContent = `${user.username}`;
+  }
+
   let deleteUserId = null;
 
   const logoutBtn = document.getElementById("logout-button");
@@ -43,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (user) {
           document.getElementById("edit-username").value = user.username || "";
           document.getElementById("edit-email").value = user.email || "";
-          document.getElementById("edit-role").value = user.role || "user";
           const roleEl = document.getElementById("edit-role");
           if (roleEl) roleEl.value = user.role || "user";
           document.getElementById("edit-password").value = "";
@@ -120,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const roleEl = document.getElementById("edit-role");
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
-      const payload = { username, email, role, password };
+      const payload = { username, email, role };
 
       if (!emailRegex(email)) return;
       if (!usernameRegex(username)) return;
@@ -130,12 +134,29 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
         if (!passwordRegex(password)) return;
+        payload.password = password;
       }
 
       try {
         await patchRequest(`${Config.endpoints.users}/${id}`, payload);
+
         renderUsers();
+
+        // Modalı kapat
+        const modalEl = document.getElementById("user-edit-Modal");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
         editform.reset();
+
+        if (id == Store.state.user.id) {
+          const updatedUser = await getRequest(
+            `${Config.endpoints.users}/${id}`,
+          );
+          Store.updateUser(updatedUser);
+          document.getElementById("welcome-message").textContent =
+            updatedUser.username;
+        }
       } catch (error) {
         console.error("İşlem hatası:", error);
         alert("Hata: " + (error.message || "İşlem başarısız oldu."));
@@ -173,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await postRequest(Config.endpoints.users, payload);
         renderUsers();
+
         addForm.reset();
       } catch (error) {
         console.error("İşlem hatası:", error);

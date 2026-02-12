@@ -52,7 +52,7 @@
                 <a
                   class="nav-link active text-dark"
                   aria-current="page"
-                  href="#"
+                  href="profile.html"
                 >
                   Profil</a
                 >
@@ -81,7 +81,6 @@
                         type="text"
                         class="form-control"
                         id="profile-username"
-                        disabled
                       />
                     </div>
                     <div class="mb-3">
@@ -92,30 +91,18 @@
                         type="email"
                         class="form-control"
                         id="profile-email"
-                        disabled
                       />
                     </div>
                     <div class="mb-3">
                       <label for="profile-role" class="form-label">Rol</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="profile-role"
-                        disabled
-                      />
+                      <select class="form-select" id="profile-role">
+                        <option value="admin">Admin</option>
+                        <option value="editor">Editor</option>
+                        <option value="user">User</option>
+                      </select>
                     </div>
                     <hr />
-                    <h5 class="mb-3">Şifre Değiştir</h5>
-                    <div class="mb-3">
-                      <label for="current-password" class="form-label"
-                        >Mevcut Şifre</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="current-password"
-                      />
-                    </div>
+                    <h5 class="mb-3"></h5>
                     <div class="mb-3">
                       <label for="new-password" class="form-label"
                         >Yeni Şifre</label
@@ -127,7 +114,7 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label for="current-password" class="form-label"
+                      <label for="new-password2" class="form-label"
                         >Yeni Şifre Tekrar</label
                       >
                       <input

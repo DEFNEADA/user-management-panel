@@ -1,5 +1,5 @@
 body.auth-page {
-  background-color: rgb(247, 189, 144);
+  background: linear-gradient(to right, rgb(248, 242, 238), rgb(134, 134, 134));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +10,7 @@ body.auth-page {
   width: 100%;
   max-width: 400px;
   border-radius: 10px;
-  background-color: rgb(246, 158, 90);
+  background-color: rgb(163, 161, 161);
 }
 
 .form-control:focus {

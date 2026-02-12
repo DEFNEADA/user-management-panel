@@ -20,6 +20,11 @@ export const Store = {
     }
   },
 
+  updateUser(user) {
+    this.state.user = user;
+    Storage.setUser(user);
+  },
+
   logout() {
     this.state.token = null;
     this.state.user = null;
@@ -28,8 +33,7 @@ export const Store = {
 
   get isAuthenticated() {
     //kullanıcı şuan içerde mi?
-    //return !!this.state.token;
-    return !!Storage.getToken();
+    return !!this.state.token;
   },
 
   get currentUser() {
