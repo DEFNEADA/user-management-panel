@@ -1,39 +1,32 @@
 {
   "users": [
     {
-      "email": "admin2@mple.com",
-      "password": "$2a$10$S2TuuxoVF9ddDbXT9W0bv.LK2pBHJEK48yEfMze7H75Az7fKe980C",
-      "username": "Defne_ada52",
+      "email": "defne@ornek.com",
+      "password": "$2a$10$MKH7Hj2sBhsbvplV2sjli.F1NqBNvokgCnHeJAX0S29cq2AxHJ9My",
+      "username": "Defne_22",
       "role": "admin",
-      "id": 4
+      "id": 12
     },
     {
-      "email": "defne@exampl.com",
-      "password": "$2a$10$kdSXWP2xEwEqy9Jr2SbVeeO9DLf0zAZw6FOKcuQaSJFExLPYpqMp.",
-      "username": "defnee3",
+      "email": "defnee@ornek.com",
+      "password": "$2a$10$2kJ7NmqYCZ.tmNR16WZN1ufM/aeEe62vbgBTCkxjmmEEA/8hrHVwC",
+      "username": "defneada",
       "role": "user",
-      "id": 6
+      "id": 13
     },
     {
-      "email": "defneada@gmail.com",
-      "password": "$2a$10$dFUtbFKa884WLCT4u.k30OnHwUbxcmLxRe5sacdjZwtzZhzGGgM1S",
-      "username": "defneada52",
-      "role": "admin",
-      "id": 7
+      "email": "defnne@ornek.com",
+      "password": "$2a$10$Sni/Zvk9hQtS./Z29eOn4OOqIqtRJp6.koTLlcPdUeJ93WvXZhnTC",
+      "username": "defne12",
+      "role": "editor",
+      "id": 14
     },
     {
-      "email": "defneada10@gmail.com",
-      "password": "$2a$10$M2ROoWIv5XNLzwECMubtOOFK69LUv/xvX/9uUvvuCFVjlJcqKZ/.O",
-      "username": "Defneaada@gmail.com",
+      "email": "defneadaaa@ornek.com",
+      "password": "$2a$10$8ssVdL5dBMg8dt4ExKXzrePB4wTOgdmnQlQ8/hp0Ajd0blnuiXIJS",
+      "username": "DDE",
       "role": "user",
-      "id": 8
-    },
-    {
-      "email": "defneada1@gmail.com",
-      "password": "$2a$10$j.QZ9eyx1aRqb0sDA6srVuWHgOXw78.tGMFNc7cmCrZLhIBqZ9P7W",
-      "username": "defne",
-      "role": "admin",
-      "id": 9
+      "id": 15
     }
   ],
   "logs": []

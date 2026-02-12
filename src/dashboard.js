@@ -13,6 +13,11 @@ import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
 
+  const user = Store.currentUser;
+  if (user) {
+    document.getElementById("welcome-message").textContent = `${user.username}`;
+  }
+
   let deleteUserId = null;
 
   const logoutBtn = document.getElementById("logout-button");
@@ -26,11 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const adduserbutton = document.getElementById("adduserbutton");
   if (adduserbutton) {
     adduserbutton.addEventListener("click", () => {
-      document.getElementById("user-transactions-form").reset();
+      document.getElementById("user-add-form").reset();
       document.getElementById("user-id").value = "";
-      document.querySelector(
-        "#user-transaction-Modal .modal-title",
-      ).textContent = "Yeni Kullanıcı Ekle";
+      document.querySelector("#user-add-Modal .modal-title").textContent =
+        "Yeni Kullanıcı Ekle";
     });
   }
 
@@ -42,17 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = editBtn.getAttribute("data-id");
         const user = await getRequest(`${Config.endpoints.users}/${id}`);
         if (user) {
-          document.getElementById("username").value = user.username || "";
-          document.getElementById("email").value = user.email || "";
-          document.getElementById("role").value = user.role || "user";
-          document.getElementById("password").value = "";
-          document.getElementById("password2").value = "";
-          document.getElementById("user-id").value = user.id; // ID'yi kaydet
-          document.querySelector(
-            "#user-transaction-Modal .modal-title",
-          ).textContent = "Kullanıcı Düzenle";
+          document.getElementById("edit-username").value = user.username || "";
+          document.getElementById("edit-email").value = user.email || "";
+          const roleEl = document.getElementById("edit-role");
+          if (roleEl) roleEl.value = user.role || "user";
+          document.getElementById("edit-password").value = "";
+          document.getElementById("edit-password2").value = "";
+          document.getElementById("user-id").value = user.id; // ID'yi kaydet hiddn
 
-          const modalEl = document.getElementById("user-transaction-Modal");
+          const modalEl = document.getElementById("user-edit-Modal");
           const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.show();
         }
@@ -110,18 +112,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  const transactionForm = document.getElementById("user-transactions-form");
-  if (transactionForm) {
-    transactionForm.addEventListener("submit", async (e) => {
+  const editform = document.getElementById("user-edit-form");
+  if (editform) {
+    editform.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      const id = document.getElementById("user-id").value; //hiddnid
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const password2 = document.getElementById("password2").value;
-      const roleEl = document.getElementById("role");
+      const id = document.getElementById("user-id").value;
+      const username = document.getElementById("edit-username").value;
+      const email = document.getElementById("edit-email").value;
+      const password = document.getElementById("edit-password").value;
+      const password2 = document.getElementById("edit-password2").value;
+      const roleEl = document.getElementById("edit-role");
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
       const payload = { username, email, role };
@@ -133,26 +133,69 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Şifreler eşleşmiyor!");
           return;
         }
-        payload.password = password;
         if (!passwordRegex(password)) return;
+        payload.password = password;
       }
 
       try {
-        if (id) {
-          await patchRequest(`${Config.endpoints.users}/${id}`, payload);
-        } else {
-          if (!password) {
-            alert("Yeni kullanıcı için şifre zorunludur!");
-            return;
-          }
-          await postRequest(Config.endpoints.users, payload);
-        }
+        await patchRequest(`${Config.endpoints.users}/${id}`, payload);
 
-        const modalEl = document.getElementById("user-transaction-Modal");
-        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-        modal.hide();
         renderUsers();
-        transactionForm.reset();
+
+        // Modalı kapat
+        const modalEl = document.getElementById("user-edit-Modal");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+        editform.reset();
+
+        if (id == Store.state.user.id) {
+          const updatedUser = await getRequest(
+            `${Config.endpoints.users}/${id}`,
+          );
+          Store.updateUser(updatedUser);
+          document.getElementById("welcome-message").textContent =
+            updatedUser.username;
+        }
+      } catch (error) {
+        console.error("İşlem hatası:", error);
+        alert("Hata: " + (error.message || "İşlem başarısız oldu."));
+      }
+    });
+  }
+
+  const addForm = document.getElementById("user-add-form");
+  if (addForm) {
+    addForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const password2 = document.getElementById("password2").value;
+      const roleEl = document.getElementById("role");
+      const role = roleEl && roleEl.value ? roleEl.value : "user";
+
+      const payload = { username, email, role, password };
+
+      if (!emailRegex(email)) return;
+      if (!usernameRegex(username)) return;
+
+      if (password !== password2) {
+        alert("Şifreler eşleşmiyor!");
+        return;
+      }
+      if (!passwordRegex(password)) return;
+      if (!password) {
+        alert("Yeni kullanıcı için şifre zorunludur!");
+        return;
+      }
+
+      try {
+        await postRequest(Config.endpoints.users, payload);
+        renderUsers();
+
+        addForm.reset();
       } catch (error) {
         console.error("İşlem hatası:", error);
         alert("Hata: " + (error.message || "İşlem başarısız oldu."));

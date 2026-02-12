@@ -8,6 +8,9 @@ export const Storage = {
   removeToken() {
     localStorage.removeItem("token");
   },
+  removeUser() {
+    localStorage.removeItem("user");
+  },
   getUser() {
     try {
       return JSON.parse(localStorage.getItem("user"));

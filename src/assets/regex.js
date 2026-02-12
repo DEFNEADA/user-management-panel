@@ -31,6 +31,7 @@ export function usernameRegex(username) {
     alert(
       "Kullanıcı adı en az 3 karakterden oluşmalı boşluk veya nokta kullanmayınız",
     );
+
     return false;
   } else {
     return true;
