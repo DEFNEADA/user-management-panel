@@ -1,10 +1,10 @@
 {
   "users": [
     {
-      "email": "admin2@mple.com",
-      "password": "$2a$10$S2TuuxoVF9ddDbXT9W0bv.LK2pBHJEK48yEfMze7H75Az7fKe980C",
-      "username": "Defne_ada52",
-      "role": "admin",
+      "email": "ddd@gmail.com",
+      "password": "",
+      "username": "Defneada",
+      "role": "editor",
       "id": 4
     },
     {
@@ -34,6 +34,13 @@
       "username": "defne",
       "role": "admin",
       "id": 9
+    },
+    {
+      "email": "defne@ornekk.com",
+      "password": "$2a$10$GkgiDCEzfE4xZGjBtAhmi.XMWq4L17Te2qDOZYPTPiFUqyTglCPpS",
+      "username": "defneada1212",
+      "role": "user",
+      "id": 10
     }
   ],
   "logs": []

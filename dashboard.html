@@ -68,7 +68,7 @@
                 type="button"
                 class="btn btn-sm btn-primary"
                 data-bs-toggle="modal"
-                data-bs-target="#user-transaction-Modal"
+                data-bs-target="#user-add-Modal"
               >
                 Yeni Kullanıcı Ekle
               </button>
@@ -95,7 +95,7 @@
 
     <div
       class="modal fade"
-      id="user-transaction-Modal"
+      id="user-add-Modal"
       tabindex="-1"
       aria-hidden="true"
     >
@@ -112,8 +112,7 @@
           </div>
 
           <div class="modal-body">
-            <form id="user-transactions-form">
-              <input type="hidden" id="user-id" />
+            <form id="user-add-form">
               <div class="mb-3">
                 <label for="username" class="form-label">Kullanıcı Adı</label>
                 <input
@@ -153,9 +152,93 @@
               <div class="mb-3">
                 <label for="role" class="form-label">Rol</label>
                 <select class="form-select" id="role">
-                  <option value="user">Kullanıcı</option>
-                  <option value="admin">Yönetici</option>
-                  <option value="editor">Düzenleyici</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                  <option value="editor">Editor</option>
+                </select>
+              </div>
+              <div class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Kapat
+                </button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- edit Modal -->
+    <div
+      class="modal fade"
+      id="user-edit-Modal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title text-white">Kullanıcı Düzenle</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="user-edit-form">
+              <input type="hidden" id="user-id" />
+
+              <div class="mb-3">
+                <label for="username" class="form-label">Kullanıcı Adı</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="edit-username"
+                  placeholder="defneada34"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">E-posta</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="edit-email"
+                  placeholder="ornek@email.com"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Şifre</label>
+                <input
+                  type="edit-password"
+                  class="form-control"
+                  id="edit-password"
+                  placeholder="******"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="edit-password2" class="form-label"
+                  >Şifre Tekrar</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="edit-password2"
+                  placeholder="******"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="role" class="form-label">Rol</label>
+                <select class="form-select" id="edit-role">
+                  <option value="user">user</option>
+                  <option value="admin">admin</option>
+                  <option value="editor">editor</option>
                 </select>
               </div>
               <div class="text-end">
@@ -177,7 +260,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header bg-dark">
-            <h5 class="modal-title bg-dark text-white">Onaylama</h5>
+            <h5 class="modal-title bg-dark text-white">Bilgilendirme</h5>
             <button
               type="button"
               class="btn-close btn-close-white"
