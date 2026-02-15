@@ -27,7 +27,7 @@ export function emailRegex(input) {
 }
 
 export function passwordRegex(input) {
-  const value = input.value;
+  const value = input.value.trim();
   if (!value) {
     Store.setError("Lütfen tüm alanları doldurun.");
     input.classList.add("is-invalid");

@@ -1,25 +1,18 @@
 {
   "users": [
     {
-      "email": "defnne@ornek.com",
-      "password": "$2a$10$Kj2/DFgmEcWms5yZmu0oAODssydLvP92Y0Vp2f2QNuTYjfAfWSbwu",
-      "username": "DEFNE_ADA",
-      "role": "editor",
-      "id": 14
-    },
-    {
-      "email": "admin2@example.com",
-      "password": "$2a$10$.WRcr5xtFdLsgNfPwdh2rOdiSq/H4k4.2bylQ9W14QG.607HRRqcm",
-      "username": "uhhu",
-      "role": "admin",
-      "id": 15
-    },
-    {
       "email": "defneadaa@ornek.com",
       "password": "$2a$10$.O429GdiJsz9SO2v1EUqPOBJ08W4tCTqCbW5iJ2.pVkMWpmQ/ROaS",
       "username": "defne",
       "role": "user",
       "id": 16
+    },
+    {
+      "email": "defne@ornek.com",
+      "password": "$2a$10$G1vrrIPfDFrSeqZ.6iT3ze1m1sQjk8qwLFAz2.TSoUEf3xSmJ8pVq",
+      "username": "defneada",
+      "role": "user",
+      "id": 17
     }
   ],
   "logs": []

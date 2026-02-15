@@ -9,6 +9,7 @@ import {
   deleteRequest,
 } from "./api/api.js";
 import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
+import showToast from "./assets/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
@@ -69,7 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         } catch (error) {
           console.error("Kullanıcı bilgileri yüklenirken hata:", error);
-          alert("Kullanıcı bilgileri yüklenemedi.");
+          showToast(
+            error.message || "Kullanıcı bilgileri yüklenemedi.",
+            "error",
+          );
         }
       }
 
@@ -78,11 +82,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = deleteBtn.getAttribute("data-id");
 
         if (id == Store.state.user.id) {
-          alert("Kendinizi silemezsiniz!");
+          showToast("Kendinizi silemezsiniz!", "error");
           return;
         }
 
         deleteUserId = id;
+        const modalEl = document.getElementById("userdeleteinform");
+        const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
       }
 
       const detailsbtn = e.target.closest(".details-btn");
@@ -98,8 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("detail-role").textContent =
               user.role || "-";
             document.getElementById("detail-id").textContent = user.id || "-";
+            const modalEl = document.getElementById("userdetailinform");
+            const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
           } else {
-            alert("Kullanıcı bulunamadı");
+            showToast("Kullanıcı bulunamadı", "error");
             return;
           }
         } catch (error) {
@@ -116,12 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           await deleteRequest(`${Config.endpoints.users}/${deleteUserId}`);
           const modalEl = document.getElementById("userdeleteinform");
-          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.hide();
-          alert("Kullanıcı başarıyla silindi!");
+          showToast("Kullanıcı başarıyla silindi!");
           renderUsers();
         } catch (error) {
-          alert("Silme işlemi başarısız: " + error.message);
+          console.log("Silme işlemi başarısız: " + error.message);
+          showToast("Silme işlemi başarısız: " + error.message, "error");
         }
       }
     });
@@ -140,8 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const username = usernameEl.value.trim();
       const email = emailEl.value.trim().toLowerCase();
-      const password = passwordEl.value;
-      const password2 = password2El.value;
+      const password = passwordEl.value.trim();
+      const password2 = password2El.value.trim();
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
       const payload = { username, email, role };
@@ -156,8 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
           passwordEl.classList.add("is-invalid");
           password2El.classList.add("is-invalid");
           isValid = false;
-        } else if (!passwordRegex(passwordEl) && !passwordRegex(password2El)) {
-          isValid = false;
+        } else {
+          password2El.classList.remove("is-invalid");
+          if (!passwordRegex(passwordEl)) isValid = false;
         }
 
         payload.password = password;
@@ -177,9 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
           const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.hide();
           editform.reset();
-          alert("Kullanıcı başarıyla güncellendi!");
+          showToast("Kullanıcı başarıyla güncellendi!");
         } else {
-          alert("Kullanıcı güncellenemedi!");
+          showToast("Kullanıcı güncellenemedi!", "error");
         }
         if (id == Store.state.user.id) {
           const updatedUser = await getRequest(
@@ -191,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         console.error("İşlem hatası:", error);
-        alert("Hata: " + (error.message || "İşlem başarısız oldu."));
+        showToast(error.message || "İşlem hatası", "error");
       }
     });
   }
@@ -209,8 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const username = usernameEl.value.trim();
       const email = emailEl.value.trim().toLowerCase();
-      const password = passwordEl.value;
-      const password2 = password2El.value;
+      const password = passwordEl.value.trim();
+      const password2 = password2El.value.trim();
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
       const payload = { username, email, role, password };
@@ -225,7 +237,10 @@ document.addEventListener("DOMContentLoaded", () => {
           passwordEl.classList.add("is-invalid");
           password2El.classList.add("is-invalid");
           isValid = false;
-        } else if (!passwordRegex(passwordEl)) isValid = false;
+        } else {
+          password2El.classList.remove("is-invalid");
+          if (!passwordRegex(passwordEl)) isValid = false;
+        }
       } else {
         Store.setError("Lütfen tüm alanları doldurun.");
         passwordEl.classList.add("is-invalid");
@@ -238,19 +253,19 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const response = await postRequest(Config.endpoints.users, payload);
         if (response) {
-          alert("Kullanıcı başarıyla eklendi!");
+          showToast("Kullanıcı başarıyla eklendi!");
           const modalEl = document.getElementById("user-add-Modal");
           const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.hide();
           addForm.reset();
           Store.clearError();
         } else {
-          alert("Kullanıcı eklenmedi!");
+          showToast("Kullanıcı eklenemedi!", "error");
         }
         renderUsers();
       } catch (error) {
-        console.error("İşlem hatası:", error);
-        alert("Hata: " + (error.message || "İşlem başarısız oldu."));
+        console.log("İşlem hatası:", error);
+        showToast(error.message || "İşlem gerçekleşmedi", "error");
       }
     });
   }

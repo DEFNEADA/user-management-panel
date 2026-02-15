@@ -1,5 +1,6 @@
 import { getRequest } from "../api/api.js";
 import { Config } from "../api/config.js";
+import { Store } from "../assets/store.js";
 
 export async function renderUsers() {
   const userList = document.getElementById("userlist");
@@ -20,9 +21,9 @@ export async function renderUsers() {
                 <td>${user.email}</td>
                 <td><span class="badge bg-${user.role === "admin" ? "danger" : "primary"}">${user.role || "user"}</span></td>
                 <td >
-                    <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#user-edit-Modal">Düzenle</button>
-                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#userdeleteinform">Sil</button>
-                    <button class="btn btn-sm btn-outline-success details-btn" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#userdetailinform">Detaylar</button>
+                    <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${user.id}">Düzenle</button>
+                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${user.id}">Sil</button>
+                    <button class="btn btn-sm btn-outline-success details-btn" data-id="${user.id}">Detaylar</button>
                 
                 </td>
             </tr>
