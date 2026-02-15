@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     adduserbutton.addEventListener("click", () => {
       document.getElementById("user-add-form").reset();
       document.getElementById("user-id").value = "";
-      document.querySelector("#user-add-Modal .modal-title").textContent =
-        "Yeni Kullanıcı Ekle";
+      Store.clearError();
     });
   }
 
@@ -43,20 +42,34 @@ document.addEventListener("DOMContentLoaded", () => {
     userList.addEventListener("click", async (e) => {
       const editBtn = e.target.closest(".edit-btn");
       if (editBtn) {
-        const id = editBtn.getAttribute("data-id");
-        const user = await getRequest(`${Config.endpoints.users}/${id}`);
-        if (user) {
-          document.getElementById("edit-username").value = user.username || "";
-          document.getElementById("edit-email").value = user.email || "";
-          const roleEl = document.getElementById("edit-role");
-          if (roleEl) roleEl.value = user.role || "user";
-          document.getElementById("edit-password").value = "";
-          document.getElementById("edit-password2").value = "";
-          document.getElementById("user-id").value = user.id; // ID'yi kaydet hiddn
+        try {
+          const id = editBtn.getAttribute("data-id");
+          const user = await getRequest(`${Config.endpoints.users}/${id}`);
+          if (user) {
+            document.getElementById("edit-username").value =
+              user.username || "";
+            document.getElementById("edit-email").value = user.email || "";
+            const roleEl = document.getElementById("edit-role");
+            if (roleEl) roleEl.value = user.role || "user";
+            document.getElementById("edit-password").value = "";
+            document.getElementById("edit-password2").value = "";
+            document.getElementById("user-id").value = user.id; // ID'yi kaydet hiddn
 
-          const modalEl = document.getElementById("user-edit-Modal");
-          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-          modal.show();
+            const modalEl = document.getElementById("user-edit-Modal");
+            const errorBox = modalEl.querySelector("#error-box");
+            if (errorBox) {
+              errorBox.classList.add("d-none");
+              errorBox.classList.remove("d-block");
+              errorBox.textContent = "";
+            }
+
+            const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+            Store.clearError();
+          }
+        } catch (error) {
+          console.error("Kullanıcı bilgileri yüklenirken hata:", error);
+          alert("Kullanıcı bilgileri yüklenemedi.");
         }
       }
 
@@ -105,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const modalEl = document.getElementById("userdeleteinform");
           const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
           modal.hide();
+          alert("Kullanıcı başarıyla silindi!");
           renderUsers();
         } catch (error) {
           alert("Silme işlemi başarısız: " + error.message);
@@ -117,38 +131,56 @@ document.addEventListener("DOMContentLoaded", () => {
     editform.addEventListener("submit", async (e) => {
       e.preventDefault();
       const id = document.getElementById("user-id").value;
-      const username = document.getElementById("edit-username").value;
-      const email = document.getElementById("edit-email").value;
-      const password = document.getElementById("edit-password").value;
-      const password2 = document.getElementById("edit-password2").value;
+
+      const usernameEl = document.getElementById("edit-username");
+      const emailEl = document.getElementById("edit-email");
+      const passwordEl = document.getElementById("edit-password");
+      const password2El = document.getElementById("edit-password2");
       const roleEl = document.getElementById("edit-role");
+
+      const username = usernameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+      const password = passwordEl.value;
+      const password2 = password2El.value;
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
       const payload = { username, email, role };
 
-      if (!emailRegex(email)) return;
-      if (!usernameRegex(username)) return;
+      let isValid = true;
+      if (!emailRegex(emailEl)) isValid = false;
+      if (!usernameRegex(usernameEl)) isValid = false;
+
       if (password) {
         if (password !== password2) {
-          alert("Şifreler eşleşmiyor!");
-          return;
+          Store.setError("Şifreler eşleşmiyor!");
+          passwordEl.classList.add("is-invalid");
+          password2El.classList.add("is-invalid");
+          isValid = false;
+        } else if (!passwordRegex(passwordEl) && !passwordRegex(password2El)) {
+          isValid = false;
         }
-        if (!passwordRegex(password)) return;
+
         payload.password = password;
       }
 
+      if (!isValid) return;
+
       try {
-        await patchRequest(`${Config.endpoints.users}/${id}`, payload);
+        const response = await patchRequest(
+          `${Config.endpoints.users}/${id}`,
+          payload,
+        );
+        if (response) {
+          renderUsers();
 
-        renderUsers();
-
-        // Modalı kapat
-        const modalEl = document.getElementById("user-edit-Modal");
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-
-        editform.reset();
-
+          const modalEl = document.getElementById("user-edit-Modal");
+          const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+          editform.reset();
+          alert("Kullanıcı başarıyla güncellendi!");
+        } else {
+          alert("Kullanıcı güncellenemedi!");
+        }
         if (id == Store.state.user.id) {
           const updatedUser = await getRequest(
             `${Config.endpoints.users}/${id}`,
@@ -169,33 +201,53 @@ document.addEventListener("DOMContentLoaded", () => {
     addForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const password2 = document.getElementById("password2").value;
+      const usernameEl = document.getElementById("username");
+      const emailEl = document.getElementById("email");
+      const passwordEl = document.getElementById("password");
+      const password2El = document.getElementById("password2");
       const roleEl = document.getElementById("role");
+
+      const username = usernameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+      const password = passwordEl.value;
+      const password2 = password2El.value;
       const role = roleEl && roleEl.value ? roleEl.value : "user";
 
       const payload = { username, email, role, password };
 
-      if (!emailRegex(email)) return;
-      if (!usernameRegex(username)) return;
+      let isValid = true;
+      if (!emailRegex(emailEl)) isValid = false;
+      if (!usernameRegex(usernameEl)) isValid = false;
 
-      if (password !== password2) {
-        alert("Şifreler eşleşmiyor!");
-        return;
+      if (password) {
+        if (password !== password2) {
+          Store.setError("Şifreler eşleşmiyor!");
+          passwordEl.classList.add("is-invalid");
+          password2El.classList.add("is-invalid");
+          isValid = false;
+        } else if (!passwordRegex(passwordEl)) isValid = false;
+      } else {
+        Store.setError("Lütfen tüm alanları doldurun.");
+        passwordEl.classList.add("is-invalid");
+        password2El.classList.add("is-invalid");
+        isValid = false;
       }
-      if (!passwordRegex(password)) return;
-      if (!password) {
-        alert("Yeni kullanıcı için şifre zorunludur!");
-        return;
-      }
+
+      if (!isValid) return;
 
       try {
-        await postRequest(Config.endpoints.users, payload);
+        const response = await postRequest(Config.endpoints.users, payload);
+        if (response) {
+          alert("Kullanıcı başarıyla eklendi!");
+          const modalEl = document.getElementById("user-add-Modal");
+          const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+          addForm.reset();
+          Store.clearError();
+        } else {
+          alert("Kullanıcı eklenmedi!");
+        }
         renderUsers();
-
-        addForm.reset();
       } catch (error) {
         console.error("İşlem hatası:", error);
         alert("Hata: " + (error.message || "İşlem başarısız oldu."));

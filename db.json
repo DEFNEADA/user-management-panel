@@ -1,32 +1,25 @@
 {
   "users": [
     {
-      "email": "defne@ornek.com",
-      "password": "$2a$10$MKH7Hj2sBhsbvplV2sjli.F1NqBNvokgCnHeJAX0S29cq2AxHJ9My",
-      "username": "Defne_22",
-      "role": "admin",
-      "id": 12
-    },
-    {
-      "email": "defnee@ornek.com",
-      "password": "$2a$10$2kJ7NmqYCZ.tmNR16WZN1ufM/aeEe62vbgBTCkxjmmEEA/8hrHVwC",
-      "username": "defneada",
-      "role": "user",
-      "id": 13
-    },
-    {
       "email": "defnne@ornek.com",
-      "password": "$2a$10$Sni/Zvk9hQtS./Z29eOn4OOqIqtRJp6.koTLlcPdUeJ93WvXZhnTC",
-      "username": "defne12",
+      "password": "$2a$10$Kj2/DFgmEcWms5yZmu0oAODssydLvP92Y0Vp2f2QNuTYjfAfWSbwu",
+      "username": "DEFNE_ADA",
       "role": "editor",
       "id": 14
     },
     {
-      "email": "defneadaaa@ornek.com",
-      "password": "$2a$10$8ssVdL5dBMg8dt4ExKXzrePB4wTOgdmnQlQ8/hp0Ajd0blnuiXIJS",
-      "username": "DDE",
-      "role": "user",
+      "email": "admin2@example.com",
+      "password": "$2a$10$.WRcr5xtFdLsgNfPwdh2rOdiSq/H4k4.2bylQ9W14QG.607HRRqcm",
+      "username": "uhhu",
+      "role": "admin",
       "id": 15
+    },
+    {
+      "email": "defneadaa@ornek.com",
+      "password": "$2a$10$.O429GdiJsz9SO2v1EUqPOBJ08W4tCTqCbW5iJ2.pVkMWpmQ/ROaS",
+      "username": "defne",
+      "role": "user",
+      "id": 16
     }
   ],
   "logs": []
