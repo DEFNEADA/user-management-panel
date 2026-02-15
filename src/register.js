@@ -1,6 +1,7 @@
 import { register, CheckGuest } from "./assets/auth.js";
 import { emailRegex, passwordRegex, usernameRegex } from "./assets/regex.js";
 import { Store } from "./assets/store.js";
+import showToast from "./assets/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckGuest();
@@ -29,6 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
         passwordEl.classList.add("is-invalid");
         password2El.classList.add("is-invalid");
         isValid = false;
+      } else {
+        password2El.classList.remove("is-invalid");
       }
 
       if (!isValid) return;
@@ -37,15 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
         let role = "user"; // Varsayılan rolü tanımlayalım
         const result = await register(email, password, username, role);
         if (result.success) {
-          alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-          window.location.replace("login.html");
+          showToast("Kayıt başarılı! Giriş yapabilirsiniz.");
+          setTimeout(() => {
+            window.location.replace("login.html");
+          }, 2000);
         } else {
-          if (result.error === "Email already exists") {
+          const errorMessage = result.error?.message || result.error;
+          if (errorMessage === "Email already exists") {
             Store.setError(
               "Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.",
             );
           } else {
-            alert(result.error?.message || result.error || "Kayıt başarısız.");
+            showToast(errorMessage || "Kayıt başarısız.", "error");
           }
         }
       } catch (error) {

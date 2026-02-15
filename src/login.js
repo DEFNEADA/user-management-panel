@@ -1,5 +1,6 @@
 import { login, CheckGuest } from "./assets/auth.js";
 import { Store } from "./assets/store.js";
+import showToast from "./assets/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckGuest();
@@ -13,10 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value.trim();
 
       const result = await login(email, password);
-      console.log(result);
       if (result.success) {
-        window.location.href = "dashboard.html";
+        showToast("Giriş başarılı!");
         Store.clearError();
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
       } else {
         Store.setError(
           result.error?.message ||

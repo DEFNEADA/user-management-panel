@@ -3,6 +3,7 @@ import { Store } from "./assets/store.js";
 import { Config } from "./api/config.js";
 import { patchRequest, getRequest } from "./api/api.js";
 import { emailRegex, usernameRegex, passwordRegex } from "./assets/regex.js";
+import showToast from "./assets/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
@@ -45,7 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
           passwordEl.classList.add("is-invalid");
           password2El.classList.add("is-invalid");
           isValid = false;
-        } else if (!passwordRegex(passwordEl)) {
+        }
+        if (!passwordRegex(passwordEl)) {
+          password2El.classList.add("is-invalid");
           isValid = false;
         }
         payload.password = passwordEl.value.trim();
@@ -67,13 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("welcome-message").textContent =
           updatedUser.username;
         Store.clearError();
-        alert("Profil başarıyla güncellendi!");
+        showToast("Profil başarıyla güncellendi!");
 
         document.getElementById("new-password").value = "";
         document.getElementById("new-password2").value = "";
       } catch (error) {
         console.error("İşlem hatası:", error);
-        alert("Hata: " + (error.message || "İşlem başarısız oldu."));
+        showToast(error.message || "İşlem başarısız oldu.", "error");
       }
     });
   }
