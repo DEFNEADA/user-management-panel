@@ -1,4 +1,5 @@
 import { login, CheckGuest } from "./assets/auth.js";
+import { Store } from "./assets/store.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckGuest();
@@ -14,11 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await login(email, password);
       console.log(result);
       if (result.success) {
-        console.log("Giriş başarılı.");
         window.location.href = "dashboard.html";
+        Store.clearError();
       } else {
-        console.error("Giriş Hatası:", result.error);
-        alert(
+        Store.setError(
           result.error?.message ||
             "Giriş başarısız! E-posta veya şifre hatalı.",
         );

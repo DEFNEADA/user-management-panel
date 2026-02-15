@@ -4,6 +4,7 @@ export const Store = {
   state: {
     token: null,
     user: null,
+    error: null,
   },
 
   init() {
@@ -11,9 +12,34 @@ export const Store = {
     this.state.user = Storage.getUser();
   },
 
+  setError(message) {
+    this.state.error = message;
+
+    const errorElement =
+      document.querySelector(".modal.show #error-box") ||
+      document.getElementById("error-box");
+
+    if (errorElement) {
+      if (message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove("d-none");
+        errorElement.classList.add("d-block");
+      } else {
+        errorElement.classList.remove("d-block");
+        errorElement.classList.add("d-none");
+        errorElement.textContent = "";
+      }
+    }
+  },
+
+  clearError() {
+    this.setError(null);
+  },
+
   setLogin(token, user) {
     this.state.token = token;
     this.state.user = user;
+    this.state.error = null;
     Storage.setToken(token);
     if (user) {
       Storage.setUser(user);

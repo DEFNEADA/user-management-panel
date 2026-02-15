@@ -24,27 +24,41 @@ document.addEventListener("DOMContentLoaded", () => {
     profileForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const username = document.getElementById("profile-username").value;
-      const email = document.getElementById("profile-email").value;
+      const usernameEl = document.getElementById("profile-username");
+      const emailEl = document.getElementById("profile-email");
+      const passwordEl = document.getElementById("new-password");
+      const password2El = document.getElementById("new-password2");
       const role = document.getElementById("profile-role").value;
-      const password = document.getElementById("new-password").value;
-      const password2 = document.getElementById("new-password2").value;
-      if (!emailRegex(email)) return;
-      if (!usernameRegex(username)) return;
+
+      const username = usernameEl.value.trim();
+      const email = emailEl.value.trim().toLowerCase();
+
+      let isValid = true;
+      if (!emailRegex(emailEl)) isValid = false;
+      if (!usernameRegex(usernameEl)) isValid = false;
 
       const payload = { username, email, role };
 
-      if (password) {
-        if (password !== password2) {
-          alert("Yeni şifreler eşleşmiyor!");
-          return;
+      if (passwordEl.value.trim()) {
+        if (passwordEl.value.trim() !== password2El.value.trim()) {
+          Store.setError("Yeni şifreler eşleşmiyor!");
+          passwordEl.classList.add("is-invalid");
+          password2El.classList.add("is-invalid");
+          isValid = false;
+        } else if (!passwordRegex(passwordEl)) {
+          isValid = false;
         }
-        if (!passwordRegex(password)) return;
-        payload.password = password;
+        payload.password = passwordEl.value.trim();
       }
 
+      if (!isValid) return;
+
       try {
-        await patchRequest(`${Config.endpoints.users}/${user.id}`, payload);
+        const response = await patchRequest(
+          `${Config.endpoints.users}/${user.id}`,
+          payload,
+        );
+        if (!response) throw new Error("Güncelleme işlemi başarısız oldu.");
 
         const updatedUser = await getRequest(
           `${Config.endpoints.users}/${user.id}`,
@@ -52,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Store.updateUser(updatedUser);
         document.getElementById("welcome-message").textContent =
           updatedUser.username;
+        Store.clearError();
         alert("Profil başarıyla güncellendi!");
 
         document.getElementById("new-password").value = "";
