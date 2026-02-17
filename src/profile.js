@@ -18,7 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("welcome-message").textContent = `${user.username}`;
     document.getElementById("profile-username").value = user.username;
     document.getElementById("profile-email").value = user.email;
-    document.getElementById("profile-role").value = user.role || "user";
+    const roleEl = document.getElementById("profile-role");
+    if (roleEl) {
+      roleEl.value = user.role || "user";
+      roleEl.disabled = true;
+    }
   }
   const profileForm = document.getElementById("profile-form");
   if (profileForm) {
@@ -29,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const emailEl = document.getElementById("profile-email");
       const passwordEl = document.getElementById("new-password");
       const password2El = document.getElementById("new-password2");
-      const role = document.getElementById("profile-role").value;
 
       const username = usernameEl.value.trim();
       const email = emailEl.value.trim().toLowerCase();
@@ -38,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!emailRegex(emailEl)) isValid = false;
       if (!usernameRegex(usernameEl)) isValid = false;
 
-      const payload = { username, email, role };
+      const payload = { username, email };
 
       if (passwordEl.value.trim()) {
         if (passwordEl.value.trim() !== password2El.value.trim()) {

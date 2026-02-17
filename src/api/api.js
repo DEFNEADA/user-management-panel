@@ -1,5 +1,6 @@
 import { Config } from "./config.js";
 import { Store } from "../assets/store.js";
+import showToast from "../assets/toast.js";
 
 export async function postRequest(endpoint, data) {
   const token = Store.state.token;
@@ -19,6 +20,14 @@ export async function postRequest(endpoint, data) {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        Store.logout();
+        window.location.href = "login.html";
+        throw new Error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
+      }
+      if (response.status === 403) {
+        throw new Error("Bu işlem için yetkiniz bulunmamaktadır!");
+      }
       const errorText = await response.text();
       throw new Error(errorText || "Network response was not ok");
     }
@@ -47,7 +56,16 @@ export async function getRequest(endpoint) {
     });
 
     if (!response.ok) {
-      throw new Error("Veri çekilemedi");
+      if (response.status === 401) {
+        Store.logout();
+        window.location.href = "login.html";
+        throw new Error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
+      }
+      if (response.status === 403) {
+        throw new Error("Bu veriyi görüntüleme yetkiniz yok!");
+      }
+      const errorText = await response.text();
+      throw new Error(errorText || "Veri çekilemedi");
     }
     return response.json();
   } catch (error) {
@@ -60,8 +78,10 @@ export async function patchRequest(endpoint, data) {
   const token = Store.state.token;
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
   };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
   try {
     const response = await fetch(`${Config.baseUrl}${endpoint}`, {
       method: "PATCH",
@@ -69,7 +89,16 @@ export async function patchRequest(endpoint, data) {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error("Veri güncellenemedi");
+      if (response.status === 401) {
+        Store.logout();
+        window.location.href = "login.html";
+        throw new Error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
+      }
+      if (response.status === 403) {
+        throw new Error("Bu işlem için yetkiniz bulunmamaktadır!");
+      }
+      const errorText = await response.text();
+      throw new Error(errorText || "Veri güncellenemedi");
     }
     return response.json();
   } catch (error) {
@@ -81,15 +110,26 @@ export async function deleteRequest(endpoint) {
   const token = Store.state.token;
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
   };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
   try {
     const response = await fetch(`${Config.baseUrl}${endpoint}`, {
       method: "DELETE",
       headers: headers,
     });
     if (!response.ok) {
-      throw new Error("Silme işlemi başarısız");
+      if (response.status === 401) {
+        Store.logout();
+        window.location.href = "login.html";
+        throw new Error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
+      }
+      if (response.status === 403) {
+        throw new Error("Bu işlem için yetkiniz bulunmamaktadır!");
+      }
+      const errorText = await response.text();
+      throw new Error(errorText || "Silme işlemi başarısız");
     }
     return response.json();
   } catch (error) {

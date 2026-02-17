@@ -13,6 +13,48 @@
       "username": "defneada",
       "role": "user",
       "id": 17
+    },
+    {
+      "email": "defnee@ornek.com",
+      "password": "$2a$10$sF4sYG4tyxK/SB4VJLn01ugU8bVzft32EZnISeyWFlUIASgYkoSJS",
+      "username": "Defne",
+      "role": "editor",
+      "id": 18
+    },
+    {
+      "email": "defneada2@gmail.com",
+      "password": "$2a$10$5ZdjzO/KL35X699tZJY4tue0C1v/wA1xMs25HO2ok5jdD/PVO1kVi",
+      "username": "defneada",
+      "role": "admin",
+      "id": 19
+    },
+    {
+      "email": "defneadaaa@ornek.com",
+      "password": "$2a$10$AK7RwAhoY34nxfDeWnovL.mtAC0WzTCKrO7fVDPlp027BK5JG8Hj2",
+      "username": "defneada",
+      "role": "user",
+      "id": 20
+    },
+    {
+      "email": "defneadaaaa@ornek.com",
+      "password": "$2a$10$Latt4LPnxH7sR6D.0Hv8Ku4coPQX64IiD.jhrR5wPBHe6wU9Z2WKK",
+      "username": "defneada",
+      "role": "user",
+      "id": 21
+    },
+    {
+      "email": "defneada10@gmail.com",
+      "password": "$2a$10$i1QOxkrX4W50HFEqG5Nd7.C2P6p/j7Hk6wZkKlDAJnOmOmX2sk6lm",
+      "username": "defneada",
+      "role": "user",
+      "id": 22
+    },
+    {
+      "email": "defneada1@gmail.com",
+      "password": "$2a$10$vzAIQQt6lo/ZCciURYU5Ou2UxhljqhGQEaxXDwzlROCacfrJf6hhi",
+      "username": "defneada",
+      "role": "user",
+      "id": 23
     }
   ],
   "logs": []
