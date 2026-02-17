@@ -31,6 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const adduserbutton = document.getElementById("adduserbutton");
   if (adduserbutton) {
+    if (!user || user.role !== "admin") {
+      adduserbutton.classList.add("d-none");
+    }
+
     adduserbutton.addEventListener("click", () => {
       document.getElementById("user-add-form").reset();
       document.getElementById("user-id").value = "";
@@ -43,6 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
     userList.addEventListener("click", async (e) => {
       const editBtn = e.target.closest(".edit-btn");
       if (editBtn) {
+        if (
+          Store.currentUser.role !== "admin" &&
+          Store.currentUser.role !== "editor"
+        ) {
+          showToast("Bu işlem için yetkiniz yok!", "error");
+          return;
+        }
         try {
           const id = editBtn.getAttribute("data-id");
           const user = await getRequest(`${Config.endpoints.users}/${id}`);
@@ -51,7 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
               user.username || "";
             document.getElementById("edit-email").value = user.email || "";
             const roleEl = document.getElementById("edit-role");
-            if (roleEl) roleEl.value = user.role || "user";
+            if (roleEl) {
+              roleEl.value = user.role || "user";
+              if (Store.currentUser.role !== "admin") {
+                roleEl.disabled = true;
+              }
+            }
             document.getElementById("edit-password").value = "";
             document.getElementById("edit-password2").value = "";
             document.getElementById("user-id").value = user.id; // ID'yi kaydet hiddn
@@ -79,6 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const deleteBtn = e.target.closest(".delete-btn");
       if (deleteBtn) {
+        if (Store.currentUser.role !== "admin") {
+          showToast("Bu işlem için yetkiniz yok!", "error");
+          return;
+        }
         const id = deleteBtn.getAttribute("data-id");
 
         if (id == Store.state.user.id) {
@@ -141,6 +161,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (editform) {
     editform.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (
+        Store.currentUser.role !== "admin" &&
+        Store.currentUser.role !== "editor"
+      ) {
+        showToast("Bu işlem için yetkiniz yok!", "error");
+        return;
+      }
       const id = document.getElementById("user-id").value;
 
       const usernameEl = document.getElementById("edit-username");
@@ -212,6 +239,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (addForm) {
     addForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (Store.currentUser.role !== "admin") {
+        showToast("Bu işlem için yetkiniz yok!", "error");
+        return;
+      }
 
       const usernameEl = document.getElementById("username");
       const emailEl = document.getElementById("email");
