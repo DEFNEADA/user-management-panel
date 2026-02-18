@@ -26,7 +26,7 @@ export async function postRequest(endpoint, data) {
         throw new Error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
       }
       if (response.status === 403) {
-        throw new Error("Bu işlem için yetkiniz bulunmamaktadır!");
+        throw showToast("Bu işlem için yetkiniz bulunmamaktadır!", "error");
       }
       const errorText = await response.text();
       throw new Error(errorText || "Network response was not ok");
