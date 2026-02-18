@@ -3,7 +3,37 @@ import { Config } from "../api/config.js";
 import { Store } from "../assets/store.js";
 
 let currentPage = 1;
-const itemsPerPage = 7;
+const itemsPerPage = 6;
+let searchQuery = "";
+let searchRole = "";
+
+export function initSearch() {
+  const searchBox = document.getElementById("search-input");
+  const searchButton = document.getElementById("search-button");
+  const roleSelect = document.getElementById("search-role");
+
+  if (searchBox && searchButton && roleSelect) {
+    searchButton.addEventListener("click", () => {
+      searchQuery = searchBox.value.trim();
+      currentPage = 1;
+      renderUsers();
+    });
+
+    searchBox.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        searchQuery = searchBox.value.trim();
+        currentPage = 1;
+        renderUsers();
+      }
+    });
+
+    roleSelect.addEventListener("change", (e) => {
+      searchRole = e.target.value;
+      currentPage = 1;
+      renderUsers();
+    });
+  }
+}
 
 export async function renderUsers() {
   const userList = document.getElementById("userlist");
@@ -12,20 +42,26 @@ export async function renderUsers() {
   if (!userList) return;
 
   try {
-    const users = await getRequest(Config.endpoints.users);
+    let queryParams = `email_like=${searchQuery}`;
+    if (searchRole && searchRole !== "hepsi") {
+      queryParams += `&role=${searchRole}`;
+    }
+
+    const allUsers = await getRequest(
+      `${Config.endpoints.users}?${queryParams}`,
+    );
+    const totalItems = allUsers.length;
+    const endpoint = `${Config.endpoints.users}?_page=${currentPage}&_limit=${itemsPerPage}&${queryParams}`;
+    const paginationUsers = await getRequest(endpoint);
     const currentUser = Store.currentUser;
-
-    const totalItems = users.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const start = (currentPage - 1) * itemsPerPage; //hangi indexten başlicağmızı buluyoruz
-    const end = start + itemsPerPage;
-    const paginatedUsers = users.slice(start, end);
 
-    userList.innerHTML = paginatedUsers
-      .map(
-        (user, index) => `
+    userList.innerHTML = paginationUsers
+      .map((user, index) => {
+        const displayIndex = (currentPage - 1) * itemsPerPage + index + 1;
+        return `
             <tr>
-                <td>${start + index + 1}</td>
+                <td>${displayIndex}</td>
                 <td>
                     <div class="bg-secondary rounded-circle d-flex justify-content-center align-items-center text-white" style="width: 30px; height: 30px;">
                         ${(user.username || user.email).charAt(0).toUpperCase()}
@@ -50,8 +86,8 @@ export async function renderUsers() {
                 
                 </td>
             </tr>
-        `,
-      )
+        `;
+      })
       .join("");
 
     if (paginationControls) {
@@ -81,7 +117,7 @@ export async function renderUsers() {
       paginationControls.querySelectorAll(".page-link").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
-          const newPage = parseInt(e.target.getAttribute("data-page"));
+          const newPage = parseInt(btn.getAttribute("data-page"));
           if (newPage > 0 && newPage <= totalPages) {
             currentPage = newPage;
             renderUsers();

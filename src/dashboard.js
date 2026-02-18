@@ -1,6 +1,6 @@
 import { CheckAuth, logout } from "./assets/auth.js";
 import { Store } from "./assets/store.js";
-import { renderUsers } from "./assets/render.js";
+import { renderUsers, initSearch } from "./assets/render.js";
 import { Config } from "./api/config.js";
 import {
   patchRequest,
@@ -13,7 +13,7 @@ import showToast from "./assets/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   CheckAuth();
-
+  initSearch();
   const user = Store.currentUser;
   if (user) {
     document.getElementById("welcome-message").textContent = `${user.username}`;

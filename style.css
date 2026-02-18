@@ -21,3 +21,6 @@ body.auth-page {
   border-color: #170827;
   box-shadow: 0 0 0 0.25rem rgba(5, 1, 8, 0.25);
 }
+#search-button:hover {
+  scale: calc(1.07);
+}
