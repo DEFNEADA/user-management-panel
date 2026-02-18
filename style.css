@@ -24,3 +24,6 @@ body.auth-page {
 #search-button:hover {
   scale: calc(1.07);
 }
+#cancel:hover {
+  scale: calc(1.07);
+}

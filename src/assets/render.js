@@ -6,7 +6,18 @@ let currentPage = 1;
 const itemsPerPage = 6;
 let searchQuery = "";
 let searchRole = "";
+const cancel = document.getElementById("cancel");
+cancel.addEventListener("click", () => {
+  clearSearchBar();
+});
 
+export function clearSearchBar() {
+  const searchBox = document.getElementById("search-input");
+  searchBox.value = "";
+  searchQuery = "";
+  currentPage = 1;
+  renderUsers();
+}
 export function initSearch() {
   const searchBox = document.getElementById("search-input");
   const searchButton = document.getElementById("search-button");
